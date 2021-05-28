@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    {#    <meta http-equiv="Page-Enter" content="revealTrans(duration=6, transition=5)">#}
+    <title>智能收费系统后台管理员登录</title>
+    <link rel="stylesheet" href={% static "css/style.css" %}>
+    <link rel="stylesheet" href={% static "css/bootstrap.css" %}>
+    <link rel="stylesheet" href={% static "layui/css/layui.css" %}>
+    <script src={% static "js/jquery-2.1.1.js" %} type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+<div id="particles-js">
+    <div class="login" style="display: block;">
+        <div class="form-group">
+            <h1 style="color: ghostwhite; margin-left: 60px;">智能停车收费系统</h1>
+        </div>
+        <br>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label style="text-align: center; color: ghostwhite; font-size: 16px;"
+                       class="col-sm-3 control-label "><span class="glyphicon glyphicon-user"></span>&nbsp;用户名:</label>
+                <div class="col-sm-8">
+                    <input style="background-color:transparent;border:1;color: white" class=" input-lg form-control"
+                           type="text"
+                           name="username" id="username" value="" placeholder="请输入您的用户名">
+                </div>
+            </div>
+            <div class="form-group">
+                <label style="text-align: center; color: ghostwhite;  font-size: 16px;" class="col-sm-3 control-label "><span
+                        class="glyphicon glyphicon-lock">
+							</span>&nbsp;密 &nbsp;&nbsp;码:</label>
+                <div class="col-sm-8">
+                    <input style="background-color:transparent;border:1;color: white" class="input-lg form-control"
+                           type="password"
+                           name="password" id="password" value="" placeholder="请输入您的密码">
+                </div>
+            </div>
+            <br>
+            <div class="form-group ">
+                <div class="col-sm-3">
+
+                </div>
+                <div class="col-sm-8">
+                    <a class="form-control input-lg btn btn-primary btn-lg" id="xadmin_login">
+                        <b style="color: lightcyan;">登录</b></a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="sk-rotating-plane"></div>
+    <canvas class="particles-js-canvas-el" width="1147" height="952" style="width: 100%; height: 100%;"></canvas>
+</div>
+<script src= {% static "js/particles.min.js" %}></script>
+<script src= {% static "js/app.js" %}></script>
+<script src= {% static "layui/layui.all.js" %}></script>
+<script type="text/javascript">
+    function hasClass(elem, cls) {
+        cls = cls || '';
+        if (cls.replace(/\s/g, '').length == 0) return false; //当cls没有参数时，返回false
+        return new RegExp(' ' + cls + ' ').test(' ' + elem.className + ' ');
+    }
+
+    function addClass(ele, cls) {
+        if (!hasClass(ele, cls)) {
+            ele.className = ele.className == '' ? cls : ele.className + ' ' + cls;
+        }
+    }
+
+    function removeClass(ele, cls) {
+        if (hasClass(ele, cls)) {
+            var newClass = ' ' + ele.className.replace(/[\t\r\n]/g, '') + ' ';
+            while (newClass.indexOf(' ' + cls + ' ') >= 0) {
+                newClass = newClass.replace(' ' + cls + ' ', ' ');
+            }
+            ele.className = newClass.replace(/^\s+|\s+$/g, '');
+        }
+    }
+
+    function login() {
+        var username = $("#username").val().replace(/(^\s*)|(\s*$)/g, "");
+        var password = $("#password").val().replace(/^\s+|\s+$/g, '');
+        console.log(username, password);
+        if (username == '' || password == '') {
+            layer.msg("不可为空，请输入正确格式", {icon: 5})
+        } else {
+
+
+            //ajax登录
+            $.ajax({
+                url: " {% url "My_Parking_Charge:admin_login" %}",
+                type: "POST",
+                dataType: 'json',
+                data: {"username": username, "psd": password},
+                success: function (e) {
+                    if (e == "1") {
+
+                        {#                        {% if next %}#}
+                        {#                       setTimeout(function () {#}
+                        {#                            location.href ='#}
+                        {#                            {% url "My_Parking_Charge:admin_login" %}?next={{next}}'#}
+                        {#                        }, 1000);//延时登陆#}
+                        {#                                 console.log("dadwadawdaw")#}
+                        {#                        {% else %}#}
+                        var index = layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
+
+
+                        setTimeout(function () {
+                            layer.close(index)
+                            layer.msg("登录成功", {icon: 1})
+                        }, 1500)
+                        setTimeout(function () {
+                            location.href =
+                            {% url "My_Parking_Charge:myindex" %}
+                        }, 2000);//延时登陆
+                        {#                        {% endif %}#}
+
+                    } else {
+                        layer.msg("登录失败", {icon: 2});
+
+                    }
+                },
+            })
+        }
+    }
+
+    console.log(window.location.href)
+    /*
+    * 鼠标单击 和键盘 enter 都可以
+    *
+    * */
+    $("#xadmin_login").click(function () {
+        login()
+
+    })
+    $(document).keydown(function (event) {
+        if (event.which == 13) {
+            login()
+        } else {
+            console.log("Key: " + event.which)
+        }
+    })
+
+
+</script>
+</body>
+</html>

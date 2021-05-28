@@ -1,0 +1,403 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}常规用户{% endblock %}
+{% block content %}
+
+    <div class=" demoTable">
+        {% if user_type == "VIP" %}
+            <a href="{% url "My_Parking_Charge:myregister" %}" class=" layui-btn layui-btn-normal ">
+                <i class="layui-icon">&#xe608;</i> 添加会员</a>
+            <button id="deleteall" class="layui-btn layui-btn-normal" data-type="delete">
+                <i class="layui-icon"></i>删除所选
+            </button>
+        {% elif user_type == "usual" %}
+            <a href="javascript:void (0);" onclick="add()" class=" layui-btn layui-btn-normal ">
+                <i class="layui-icon">&#xe608;</i> 添加记录</a>
+            <button id="deleteall" class="layui-btn layui-btn-normal" data-type="delete">
+                <i class="layui-icon"></i>删除所选
+            </button>
+        {% endif %}
+        <div class="layui-inline" style="margin-left: 5px">
+            <input class="layui-input" placeholder="输入想要查询的车牌号码" name="id" id="demoReload" autocomplete="on">
+        </div>
+        <button type="button" id="seach" class="layui-btn layui-btn-normal " data-type="reload"><i
+                class="layui-icon ">&#xe615;</i>查询
+        </button>
+    </div>
+
+
+    <table id="idTest" lay-filter="demo"></table>  {#    //数据表格#}
+
+    <script type="text/html" id="barDemo">
+        {% if user_type == "VIP"  or user_type == "usual" %}
+            <a class="layui-btn layui-btn-sm layui-btn-primary layui-btn-radius " lay-event="detail">查看</a>
+            <a class="layui-btn layui-btn-sm layui-btn-radius layui-btn-warm" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger" lay-event="del">删除</a>
+        {% else %}
+            <a class="layui-btn layui-btn-sm layui-btn-radius layui-btn-warm" lay-event="detail">缴费</a>
+        {% endif %}
+    </script>
+
+    <script src={% static "layui/layui.all.js" %}></script>
+    <script>
+        layui.use(['table', 'element', 'layer', 'laydate'],
+            function () {
+                var table = layui.table;
+                var element = layui.element;
+                var layer = layui.layer;
+                laydate = layui.laydate;
+                var tables = table.render({
+                    elem: '#idTest'
+                    {% if user_type == "VIP"  %}
+                        , url: '{% url "My_Parking_Charge:VIP__data_interface" %}'
+                    {% elif user_type == "usual" %}
+                        ,url: "{% url "My_Parking_Charge:usual_data_interface" %}"
+                    {% elif free == "free" %}
+                        ,url: "{% url "My_Parking_Charge:free_data_interface" %}"
+                    {% endif %}
+                    , page: true
+                    , limit: 10
+                    {% if user_type == "VIP"  %}
+                        , title: "用户VIP表"
+                    {% elif user_type == "usual" %}
+                        , title: "停车记录表"
+                    {% elif free == "free" %}
+                        , title: "用户停车收费表"
+                    {% endif %}
+                    , height: 520
+                    , cols: [[
+                        {type: 'checkbox', fixed: 'left'}
+                        , {field: 'userid', title: '序号', hide: true, align: 'center'}
+                        , {field: 'id', title: '车牌号', sort: true, align: 'center'}
+                        {% if user_type == "VIP"  %}
+                            , {field: 'username', title: '用户名', align: 'center'}
+                            , {field: 'birth', title: '生日', align: 'center'}        //单元格内容水平居中
+                            , {field: 'sex', title: '性别', align: 'center'}
+                            , {field: 'user_rank', title: '会员等级', align: 'center'}
+                            , {field: 'grade', title: '年龄', align: 'center'}
+                            , {field: 'phone', title: '电话号码', align: 'center'} //单元格内容水平居中
+                            , {fixed: 'right', width: 200, align: 'center', toolbar: '#barDemo'}
+                        {% elif user_type == "usual" %}
+                            , {field: 'starttime', title: '开始停车时间', align: 'center'}
+                            , {
+                            field: 'endtime',
+                            title: '结束停车时间',
+                            align: 'center',
+                            event: 'setSign',
+                            edit: 'text',
+                            data_field: 'velappr'
+                        }        //单元格内容水平居中
+                            , {field: 'user_rank', title: '是否会员', align: 'center'}
+                        {% elif free == "free" %}
+                            , {field: 'sumtime', title: '停车总时间(单位:小时)', align: 'center'}
+                            , {field: 'free', title: '停车总费用(单位:元)', align: 'center'}
+                            , {field: 'endtime', title: '清算费用时间', align: 'center'}
+
+                            , {fixed: 'right', width: 200, align: 'center', toolbar: '#barDemo'}
+                        {% endif %}
+                    ]]
+                    , toolbar: true
+                    //开启头部工具栏，并为其绑定左侧模板
+                    {#, id: 'testReload'#}     //重载id 但是对于头部的工具栏就不起作用了
+                });
+
+                //监听表格复选框选择
+                table.on('checkbox(demo)', function (obj) {
+                    console.log("多选框监听", obj)
+                });
+
+                //监听右侧的工具条
+                table.on('tool(demo)', function (obj) {
+                    var data = obj.data;
+                    //监听单元格事件
+                    var newdata = {};
+                    if (obj.event === 'setSign') {
+                        var field = $(this).data('field');
+                        var ID = data.userid;
+                        var numer = data.id
+                        console.log(ID,data.id)
+                        laydate.render({
+                            elem: this.firstChild
+                            , show: true //直接显示
+                            , closeStop: this
+                            , type: 'datetime'
+                            , format: "yyyy-MM-dd HH:mm:ss"
+                            , done: function (value, date) {
+                                $.ajax({
+                                    url: "{% url "My_Parking_Charge:usual_update" %}",
+                                    type: "post",
+                                    dataType: "json",
+                                    data: {'user_end': value, "userid": ID,"number":numer},
+                                    success: function (e) {
+                                        if (e == "1") {
+                                            layer.msg("操作成功！", {icon: 1})
+
+
+                                        } else {
+                                            layer.msg("操作失败！", {icon: 2})
+                                        }
+                                        setTimeout(function () {
+                                            window.location.reload()
+                                        }, 1000)
+                                    }
+                                })
+
+                            }
+                        });
+
+                    } else if (obj.event === 'detail') {
+                        {% if free == "free" %}
+
+                            layer.open({
+                                type: 2,
+                                title: "缴纳收费",
+                                area: ['450px', '420px'],
+                                shade: 0.8,
+                                closeBtn: 1,
+                                shadeClose: true,
+                                content: '{% url "My_Parking_Charge:QRcode_iframe" %}'
+                                , success: function (layero, index) {
+                                    var body = layer.getChildFrame('body', index);//少了这个是不能从父页面向子页面传值的
+                                    //获取子页面的元素，进行数据渲染
+                                    body.contents().find('#free').val(data.free);
+                                },
+                            });
+                            setTimeout(function () {
+                                $.ajax({
+                                    url: "{% url "My_Parking_Charge:free_update" %}",
+                                    type: "post",
+                                    datatype: "json",
+                                    data: {'ID': data.userid},
+                                    success: function (e) {
+                                        if (e == "1") {
+                                            layer.msg("支付成功！", {icon: 1})
+                                        } else {
+                                            layer.msg("支付失败！请刷新二维码", {icon: 2})
+                                        }
+                                    }
+                                });
+                            }, 7000)
+                            setTimeout(function () {
+                                window.location.reload()
+                            }, 9000)
+                        {% else %}
+                            layer.open({
+                                type: 2,
+                                title: "查看用户信息",
+                                area: ['450px', '360px'],
+                                shade: 0.8,
+                                closeBtn: 1,
+                                shadeClose: true,
+                                content: '{% url "My_Parking_Charge:vip_detail_iframe" %}'
+                                , success: function (layero, index) {
+                                    var body = layer.getChildFrame('body', index);//少了这个是不能从父页面向子页面传值的
+                                    //获取子页面的元素，进行数据渲染
+                                    body.contents().find("#ID").val(data.id);
+                                    body.contents().find('#name').val(data.username);
+                                    body.contents().find('#birth').val(data.birth);
+                                    body.contents().find('#phone').val(data.phone);
+                                    body.contents().find('#sex').val(data.sex);
+                                },
+                            });  {% endif %}
+
+                    } else if (obj.event === 'del') {
+                        layer.confirm('真的删除这行数据么？', function (index) {
+                            var data = obj.data
+                            $.ajax({
+                                url: "{% url "My_Parking_Charge:VIPdelete" %}",
+                                type: "post",
+                                datatype: "json",
+                                traditional: true,  //数组传输
+                                data: {'ID': data.userid},
+                                success: function (e) {
+                                    if (e == "1") {
+                                        layer.msg("删除成功！", {icon: 1})
+                                    } else {
+                                        layer.msg("删除失败！", {icon: 2})
+                                    }
+                                }
+                            })
+                            {#obj.del();#}
+                            layer.close(index);
+                            setTimeout(function () {
+                                window.location.reload()
+                            }, 1000)
+                        });
+                    } else if (obj.event === 'edit') {
+                        var data = obj.data
+                        var user_id = data.userid
+                        layer.open({
+                                type: 2,
+                                title: "编辑用户信息",
+                                area: ['420px', '400px'],
+                                shade: 0.8,
+                                closeBtn: 0,
+                                shadeClose: true,
+                                content: '{% url "My_Parking_Charge:vip_edit_iframe" %}'
+                                , btn: ['确定', '取消']
+                                , success: function (layero, index) {
+                                    var body = layer.getChildFrame('body', index);//少了这个是不能从父页面向子页面传值的
+                                    //获取子页面的元素，进行数据渲染
+                                    body.contents().find("#ID").val(data.id);
+                                    body.contents().find('#name').val(data.username);
+                                    body.contents().find('#birth').val(data.birth);
+                                    body.contents().find('#phone').val(data.phone);
+                                    body.contents().find('#sex').val(data.sex);
+                                }
+                                ,
+                                yes: function (index) {
+                                    var body = layer.getChildFrame('body', index);
+                                    //获取子页面的元素，进行数据渲染
+                                    var id = body.contents().find("#ID").val().replace(/^\s+|\s+$/g, '');
+                                    ;
+                                    console.log(id, user_id)
+                                    if (id == '') {
+                                        layer.msg("不能为空", {icon: 6})
+                                    } else {
+                                        $.ajax({
+                                            url: "{% url "My_Parking_Charge:VIPedit" %}",
+                                            dataType: "json",
+                                            type: "POST",
+                                            data: {'id': id, "userid": user_id},
+                                            success: function (e) {
+                                                if (e == "1") {
+                                                    layer.msg("编辑成功！", {icon: 6})
+                                                } else {
+                                                    layer.msg("编辑失败！", {icon: 5})
+                                                }
+                                            }
+                                        })
+                                    }
+                                    layer.close(index);
+                                    setTimeout(function () {
+                                        window.location.reload()
+                                    }, 1000)
+                                }
+                            }
+                        );
+
+                    }
+                })
+                ;
+
+
+                //监听上方工具条
+                var $ = layui.$, active = {
+                    //执行重载
+                    reload: function () {
+                        var demoReload = $('#demoReload');
+                        layer.msg(demoReload.val())
+                        var index = layer.msg("查询中，请稍等...", {icon: 16, time: false, shade: 0})
+                        setTimeout(function () {
+                            tables.reload({
+                                page: {
+                                    curr: 1 //重新从第 1 页开始
+                                },
+                                where: {
+                                    test: demoReload.val()
+                                }
+                            });
+                            layer.close(index)
+                        }, 800)
+                    },
+
+
+                    delete: function () { //删除选中数目
+                        var checkStatus = table.checkStatus('idTest')
+                            , data = checkStatus.data;
+                        console.log(data)
+                        if (data.length <= 0) {
+                            layer.msg("未选择");
+                        } else {
+                            var ID = [];
+                            var number = [];
+                            for (var i = 0; i < data.length; i++) {
+                                ID.push(data[i].userid)
+                                number.push(data[i].id)
+                            }
+                            layer.confirm('真的删除<b>《' + number + "》</b>这" + data.length + "个车牌号", {
+                                time: 0 //不自动关闭
+                                , btn: ['确定', '取消']
+                                , title: "删除信息"
+                                , shadeClose: true
+                                , yes: function (index) {
+                                    $.ajax({
+                                        {% if user_type == "VIP" %}
+                                            url: "{% url "My_Parking_Charge:VIPdelete" %}",
+                                        {% elif user_type == "usual" %}
+                                            url: "{% url "My_Parking_Charge:usualdelete" %}",
+                                        {% endif %}
+                                        dataType: "json",
+                                        type: "POST",
+                                        traditional: true,  //数组传输
+                                        data: {'ID': ID},
+                                        success: function (e) {
+                                            if (e == "1") {
+                                                layer.msg("删除成功！", {icon: 1})
+                                            } else {
+                                                layer.msg("删除失败！", {icon: 2})
+                                            }
+                                        }
+                                    })
+                                    layer.close(index);
+
+                                    setTimeout(function () {
+                                        window.location.reload()
+
+                                    }, 1000)
+                                }
+                            });
+
+
+                        }
+                    },
+                };
+
+                table.on('sort(demo)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                    console.log(obj.field); //当前排序的字段名
+                    console.log(obj.type); //当前排序类型：desc（降序）、asc（升序）、null（空对象，默认排序）
+                    console.log(this); //当前排序的 th 对象
+
+                    //尽管我们的 table 自带排序功能，但并没有请求服务端。
+                    //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，从而实现服务端排序，如：
+                    tables.reload({
+                        initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。 layui 2.1.1 新增参数
+                        , where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                            field: obj.field //排序字段   在接口作为参数字段  field order
+                            , order: obj.type //排序方式   在接口作为参数字段  field order
+                        }
+                    });
+                });
+                $('.demoTable .layui-btn').on('click', function () {
+                    var type = $(this).data('type');
+                    active[type] ? active[type].call(this) : '';
+                });
+
+
+            }
+        )
+
+        function add() {
+            layer.open({
+                type: 2,
+                title: "添加记录",
+                area: ['420px', '520px'],
+                shade: 0.8,
+                closeBtn: 1,
+                shadeClose: true,
+                maxmin: true
+                , content: '{% url "My_Parking_Charge:usual_iframe" %}'
+            })
+        }
+    </script>
+{% endblock %}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注销</title>
+    <link rel="stylesheet" href={% static "layui/css/layui.css" %}>
+    <link rel="stylesheet" href={% static "css/layui-theme-custom.css" %}>
+</head>
+<style>
+    html {
+        height: 100%;
+        width: 100%;
+        background-size: 100% 100%;
+        background-image: url("/static/img/5318ab688977d41445fabb118c0d039e.jpg");
+        background-repeat: no-repeat;
+
+    }
+
+</style>
+<body>
+<div class="layui-container">
+
+    <div class="layui-row layui-col-space10" style="margin: 100px auto">
+        <div class="layui-col-md6"><p style="text-align: left"><b style="font-size: 26px">感谢您今天在本站花费了一些宝贵时间。</b></p>
+            <br>
+            <p style="text-align: left"><b style="font-size: 26px">酒盈杯，书满架，名利不将心挂。</b></p>
+            <br>
+                <p style="text-align: left"><b style="font-size: 26px">清溪深不测，隐处唯孤云。</b></p>
+            <br><br>
+            <p style="text-align: right"><b><a style="color: #0000FF;font-size: 20px" href="{% url 'My_Parking_Charge:mylogin' %}">重新登录</a></b></p>
+        </div>
+        <div class="layui-col-md1"></div>
+        <div class="layui-col-md5">
+            <img width="100%" class="layui-layer-imguider"
+                 src="http://img.netbian.com/file/2020/0904/dbb00a5646309df5fad6efda1079e756.jpg" alt="">
+        </div>
+    </div>
+</div>
+</body>
+</html>

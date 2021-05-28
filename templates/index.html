@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>{% block title %}智能收费系统{% endblock %}</title>
+    <link rel="stylesheet" href={% static "layui/css/layui.css" %}>
+    <link rel="stylesheet" href={% static "css/layui-theme-custom.css" %}>
+    <script src={% static "js/jquery-2.1.1.js" %}></script>
+
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header layui-bg-cyan">
+        <div><a class="layui-logo" href="{% url "My_Parking_Charge:myindex" %}"><b style="font-size: 24px;">智能收费系统</b></a></div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            {% if user.is_authenticated %}
+                <li class="layui-nav-item">
+                    <a href="javascript:;">
+
+                        <img src="/static/img/5318ab688977d41445fabb118c0d039e.jpg"
+                             class="layui-nav-img">
+                        {{ user.username }}
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:void (0);">基本资料</a></dd>
+                        <dd><a href="javascript:void (0);">安全设置</a></dd>
+                    </dl>
+
+                </li>
+
+                <li class="layui-nav-item"><a href="{% url "My_Parking_Charge:user_logout" %}">注销</a></li>
+            {% else %}
+                <li class="layui-nav-item">
+                    <a href="{% url "My_Parking_Charge:mylogin" %}">
+                        LOGIN
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-cyan">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree ">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">用户管理</a>
+                    <dl class="layui-nav-child ">
+                        <dd><a href="{% url "My_Parking_Charge:myusual" %}">用户记录信息</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">会员管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="{% url "My_Parking_Charge:myVIP" %}">会员基本信息</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">收费管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="{% url "My_Parking_Charge:free" %}">收费记录</a></dd>
+
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <style>
+        html {
+            height: 100%;
+            width: 100%;
+            background-size: 100% 100%;
+
+            background-image: url("https://wallpaperm.cmcm.com/2d64f9b1d09b9c519b301d4d721adc0c.jpg");
+            background-repeat: no-repeat;
+        }
+
+    </style>
+
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;" id="bg">
+            {% block content %}
+                <b style="font-size: 32px;text-align: center">欢迎登录智能收费系统</b>
+                {% block script %}
+                    <script src={% static "layui/layui.js" %}></script>{% endblock %}
+            {% endblock %}
+        </div>
+    </div>
+
+    <div class="layui-footer" style="background-color: transparent">
+        <!-- 底部固定区域 -->
+        <p><i style="font-size: 18px">@</i> <b style="font-size: 16px;font-family: 华文楷体">余子怡 朱华超 张思伟 刘佳伟 窦建国 汝双双 王能宇</b></p>
+    </div>
+
+</div>
+
+<script>
+    //JavaScript代码区域
+    layui.use('element', function () {
+        var element = layui.element;
+    });
+
+    var integrityurl = window.location.href;
+    console.log("当前URL为:", integrityurl);
+
+
+    //页面跳转共用导航样式不变
+    $(document).ready(function () {
+        $(".layui-side .layui-nav-item dl dd a").each(function () {
+            $this = $(this);
+            if ($this[0].href == String(window.location)) {
+                $this.parent().addClass("layui-this");
+                $this.parent().parent().parent().addClass('layui-nav-itemed');
+                $this.parent().parent().parent().prevAll().removeClass('layui-nav-itemed');
+                $this.parent().parent().parent().nextAll().removeClass('layui-nav-itemed');
+
+            }
+        });
+    });
+
+
+</script>
+</body>
+</html>

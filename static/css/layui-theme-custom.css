@@ -1,0 +1,192 @@
+.layui-layout-admin .layui-logo {
+    color: #19a3f2
+}
+
+.layui-elem-quote {
+    border-left-color: #19a3f2
+}
+
+.layui-btn {
+    background-color: #19a3f2
+}
+
+.layui-btn-primary {
+    background-color: #fff
+}
+
+.layui-btn-primary:hover {
+    border-color: #19a3f2
+}
+
+.layui-btn-group .layui-btn-primary:hover {
+    color: #19a3f2
+}
+
+.layui-laypage a:hover {
+    color: #19a3f2
+}
+
+.layui-laypage .layui-laypage-curr .layui-laypage-em {
+    background-color: #19a3f2
+}
+
+.layui-laypage select:focus {
+    border-color: #19a3f2 !important
+}
+
+.layui-upload-drag .layui-icon {
+    font-size: 50px;
+    color: #19a3f2
+}
+
+.layui-upload-drag[lay-over] {
+    border-color: #19a3f2
+}
+
+.layui-nav-tree .layui-nav-child dd.layui-this a {
+    background-color: #19a3f2
+}
+
+.layui-nav-tree .layui-nav-bar {
+    background-color: #19a3f2
+}
+
+.layui-tab-brief > .layui-tab-title .layui-this {
+    color: #19a3f2
+}
+
+.layui-slider-input-btn i:hover {
+    color: #19a3f2
+}
+
+.layui-slider-wrap-btn {
+    border-color: #19a3f2 !important
+}
+
+.layui-slider-bar {
+    background: #19a3f2 !important
+}
+
+html .layui-laydate .layui-this {
+    background-color: #19a3f2 !important
+}
+
+.laydate-theme-molv .layui-laydate-header {
+    background-color: #19a3f2
+}
+
+.laydate-theme-grid .laydate-selected, .laydate-theme-grid .laydate-selected:hover {
+    color: #19a3f2 !important
+}
+
+.layui-progress-bar {
+    background-color: #11b0ea
+}
+
+.layui-form-select dl dd.layui-this {
+    background-color: #11b0ea
+}
+
+.layui-form-checked, .layui-form-checked:hover {
+    border-color: #11b0ea
+}
+
+.layui-form-checked span, .layui-form-checked:hover span {
+    background-color: #11b0ea
+}
+
+.layui-form-checked i, .layui-form-checked:hover i {
+    color: #11b0ea
+}
+
+.layui-form-checkbox[lay-skin=primary]:hover i {
+    border-color: #11b0ea
+}
+
+.layui-form-checked[lay-skin=primary] i {
+    border-color: #11b0ea;
+    background-color: #11b0ea
+}
+
+.layui-form-onswitch {
+    border-color: #11b0ea;
+    background-color: #11b0ea
+}
+
+.layui-form-radio > i:hover, .layui-form-radioed > i {
+    color: #11b0ea
+}
+
+.layui-table-edit:focus {
+    border-color: #11b0ea !important
+}
+
+.layui-nav-tree .layui-nav-itemed:after {
+    background-color: #11b0ea
+}
+
+.layui-nav-child dd.layui-this {
+    background-color: #11b0ea
+}
+
+.layui-nav .layui-nav-child dd.layui-this a {
+    background-color: #11b0ea
+}
+
+.layui-breadcrumb a:hover {
+    color: #11b0ea !important
+}
+
+.layui-tab-brief > .layui-tab-more li.layui-this:after, .layui-tab-brief > .layui-tab-title .layui-this:after {
+    border-bottom: 2px solid #11b0ea
+}
+
+.layui-tab-card > .layui-tab-more .layui-this {
+    color: #11b0ea
+}
+
+.layui-timeline-axis {
+    color: #11b0ea
+}
+
+.laydate-day-mark::after {
+    background-color: #11b0ea !important
+}
+
+.layui-laydate-header i:hover, .layui-laydate-header span:hover {
+    color: #11b0ea !important
+}
+
+.layui-laydate-footer span:hover {
+    color: #11b0ea !important
+}
+
+.layui-nav .layui-this:after, .layui-nav-bar, .layui-nav-tree .layui-nav-itemed:after {
+    background-color: #11b0ea !important
+}
+
+.layui-transfer-active .layui-btn {
+    background-color: #11b0ea;
+    border-color: #11b0ea;
+}
+
+.layui-form-checked[lay-skin=primary] i {
+    border-color: #11b0ea !important;
+    background-color: #11b0ea;
+}
+
+.layui-btn-normal {
+    background-color: #1E9FFF;
+}
+
+.layui-btn-warm {
+    background-color: #FFB800;
+}
+
+.layui-btn-danger {
+    background-color: #FF5722;
+}
+
+.layui-btn-disabled, .layui-btn-disabled:hover, .layui-btn-disabled:active {
+    background-color: #FBFBFB;
+}

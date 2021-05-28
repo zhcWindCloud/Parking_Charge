@@ -1,0 +1,249 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>VIP注册</title>
+        <link rel="stylesheet" href={% static "css/style.css" %}>
+        {#    <link rel="stylesheet" href={% static "css/bootstrap.css" %}>#}
+        <link rel="stylesheet" href={% static "layui/css/layui.css" %}>
+         <link rel="stylesheet" href={% static "css/layui-theme-custom.css" %}>
+        <script src={% static "js/jquery-2.1.1.js" %} type="text/javascript" charset="utf-8"></script>
+    </head>
+</head>
+<body>
+<ul class="layui-nav">
+    <li class="layui-nav-item"><a style="font-family: 华文楷体;font-size: 20px " href="{% url "My_Parking_Charge:myindex" %}">首页</a></li>
+    <li class=" layui-nav-item layui-icon layui-icon-right"></li>
+    <li class="layui-nav-item layui-this"><a style="font-family: 华文楷体;font-size: 20px " href="">VIP注册</a></li>
+</ul>
+
+<div class="layui-container">
+    <div class="layui-row layui-col-space10">
+        <div class="layui-col-md4"></div>
+        <div class="layui-col-md4"></div>
+        <div class="layui-col-md4"></div>
+    </div>
+
+    <div class="layui-row layui-col-space10">
+        <div class="layui-col-md4"></div>
+        <div class="layui-col-md4">
+            <form method="post" action="{% url "My_Parking_Charge:myregister" %}" class="layui-form layui-form-pane "
+                  style="margin-top: 100px; font-size: 14px;font-family:方正粗黑宋简体">
+
+                <div class="layui-form-item" pane>
+                    <label class="layui-form-label">车牌号</label>
+                    <div class="layui-input-block">
+                        <input id="user_number" type="text" name="user_number" required lay-verify="required"
+                               placeholder="请输入车牌号"
+                               autocomplete="off" class="layui-input">
+                    </div>
+
+                </div>
+                <div class="layui-form-item" pane>
+                    <label class="layui-form-label">用户昵称</label>
+                    <div class="layui-input-block">
+                        <input id="user_number1" type="text" name="user_name" required lay-verify="required"
+                               placeholder="请输入用户昵称"
+                               autocomplete="off" class=" layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item" pane>
+                    <label class="layui-form-label">用户手机号</label>
+                    <div class="layui-input-block">
+                        <input id="user_number3" type="text" name="user_phone" required lay-verify="required"
+                               placeholder="请输入用户手机号"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item" pane>
+                    <label class="layui-form-label">出生年月日</label>
+                    <div class="layui-input-block">
+                        <input  id="user_number4" type="text" name="user_birth" required lay-verify="required"
+                               placeholder="请输入出生年月日"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">性别</label>
+                    <div class="layui-input-block">
+                        &nbsp; &nbsp;
+                        <input type="radio"  name="sex" value="男" title="男">
+                        &nbsp; &nbsp;
+                        <input type="radio" name="sex" value="女" title="女">
+                    </div>
+                </div>
+                <br><br>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="layui-col-md4">
+            <div class="layui-row" style="margin-top: 100px">
+                <span id="user_span" class="layui-icon "
+                      style="color: rgb(0, 255, 64);font-size: 36px;"></span>
+                <br><br>
+                <span id="user_span1" class=" layui-icon "
+                      style="color: rgb(0, 255, 64);font-size: 36px;"></span>
+                <br><br>
+                <span id="user_span2" class="layui-icon "
+                      style="color: rgb(0, 255, 64);font-size: 36px;"></span>
+                <br><br>
+                <span id="user_span3" class=" layui-icon "
+                      style="color: rgb(0, 255, 64);font-size: 36px;"></span>
+                <br><br>
+                <span id="user_span4" class=" layui-icon   "
+                      style="color: rgb(0, 255, 64);font-size: 36px;"></span>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+<script src= {% static "layui/layui.all.js" %}></script>
+<script>
+
+    {#车牌号ajax验证#}
+    $("#user_number").blur(function () {
+        var name = $("#user_number").val().replace(/(^\s*)|(\s*$)/g, "");
+
+        if (name == "") {
+            layer.msg("请输入正确的格式")
+        } else {
+            console.log(name)
+            $.ajax({
+                datapyte: "JSON",
+                url: "{% url "My_Parking_Charge:VIPregister" %}",
+                type: "POST",
+                data: {'user_ID': name},
+                success: function (e) {
+                    if (e == "1") {
+                        $("#user_span").addClass('layui-icon-ok')
+                    } else {
+                        layer.msg("该车牌号已注册", {icon: 5})
+
+                    }
+
+
+                }
+
+
+            })
+        }
+    })
+
+
+    {#手机号ajax验证#}
+    $("#user_number3").blur(function () {
+        var telephone = $("#user_number3").val().replace(/(^\s*)|(\s*$)/g, "");
+        if (telephone == "") {
+            layer.msg("请输入正确的格式")
+        } else {
+            $.ajax({
+                url: "{% url "My_Parking_Charge:VIPregister" %}",
+                datapyte: "json",
+                type: "post",
+                data: {'telephone': telephone},
+                success: function (e) {
+                    if (e == "1") {
+                        $("#user_span2").addClass('layui-icon-ok')
+                    } else {
+                        layer.msg("该手机号已注册过", {icon: 5})
+                    }
+
+                }
+
+
+            })
+        }
+    })
+    {#其他input标签 失去焦点#}
+    $("#user_number1").blur(function () {
+        if ($("#user_number1").val() == "") {
+            layer.msg("请输入正确的格式")
+        } else {
+
+            $("#user_span1").addClass('layui-icon-ok')
+        }
+    })
+    $("#user_number4").blur(function () {
+        if ($("#user_number1").val() == "") {
+            layer.msg("请输入正确的格式")
+        } else {
+            $("#user_span3").addClass('layui-icon-ok')
+        }
+    })
+
+
+    {#引用了layui的样式和方法，则下面的监听事件失效，被layui接管了#}
+    {#    $('input[type=radio][name=sex]').change(function () {#}
+    {#        console.log(this.value)#}
+    {#        var s = $(this).val()#}
+    {#        console.log(s)#}
+    {##}
+    {#        $("#user_span4").addClass('layui-icon-ok')#}
+    {##}
+    {#    })#}
+
+
+    //Demo 表单提交
+    layui.use('form', function () {
+
+        var form = layui.form;
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            var dict = data.field
+            {#console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回#}
+            console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+            console.log(dict.user_name,dict.sex)
+            if (dict.user_number == '' || dict.user_name == '' || dict.user_phone == '' || dict.user_birth == '' || dict.sex == '') {
+                layer.msg("不可为空！", {icon: 5})
+            } else {
+                $.ajax({
+                    url: "{% url "My_Parking_Charge:myregister" %}",
+                    type: "post",
+                    datapyte: "json",
+                    data: {
+                        'user_name': dict.user_name, 'user_number': dict.user_number,
+                        'user_birth': dict.user_birth, 'user_sex': dict.sex, 'user_phone': dict.user_phone
+                    },
+                    success: function (e) {
+                        if (e == "1") {
+                            layer.msg("注册成功！", {icon: 1})
+                            setTimeout(function(){location.reload()}, 3000);//延时刷新
+                        } else {
+                            layer.msg("注册失败！", {icon: 2})
+                        }
+
+                    }
+
+
+                })
+
+                return false;
+            }
+        });
+    });
+
+
+    //日期选择器
+
+
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#user_number4' //指定元素
+        });
+    });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>VIP注册</title>
+    <link rel="stylesheet" href={% static "css/style.css" %}>
+    <link rel="stylesheet" href={% static "layui/css/layui.css" %}>
+    <script src={% static "js/jquery-2.1.1.js" %}></script>
+
+</head>
+
+<body>
+{% if free == "free" %}
+    <br>
+    <div style="margin: auto 75px">
+        <img src="{% static "img/联图二维码.png" %}" height="300px" width="300px" alt="">
+        <br>  <br>
+        <p style="text-align: center"> <i style="font-size: 20px">总共费用</i> &nbsp;&nbsp;&nbsp; <input id="free" readonly="readonly" size="2" type="text"
+                                                  style="font-size: 32px;font-style: oblique;background-color:transparent;border: 0px">
+             <i style="font-size: 20px">元</i></p>
+    </div>
+{% else %}
+    <div class="layui-container">
+        <div class="layui-row layui-col-space10">
+            <div class="layui-col-md4"></div>
+            <div class="layui-col-md4">
+                {% if vip_type == "edit" %}
+                    <form class="layui-form layui-form-pane "
+                          style="margin-top: 10px;font-size: 14px;font-family:方正粗黑宋简体">
+                        <div class="layui-form-item" pane>
+
+                            <label class="layui-form-label">车牌号</label>
+                            <div class="layui-input-block">
+                                <input id="ID" type="text" name="user_number" value="" required lay-verify="required"
+                                       class="layui-input">
+                            </div>
+
+                        </div>
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label">用户昵称</label>
+                            <div class="layui-input-block">
+                                <input id="name" type="text" name="user_name" value="" required lay-verify="required"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label">用户手机号</label>
+                            <div class="layui-input-block">
+                                <input id="phone" type="text" name="user_phone" required lay-verify="required"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label">出生年月日</label>
+                            <div class="layui-input-block">
+                                <input id="birth" type="text" name="user_birth" required lay-verify="required"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">性别</label>
+                            <div class="layui-input-block">
+                                <input id="sex" type="text" name="user_birth" required lay-verify="required"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                    </form>
+                {% elif vip_type == "detail" %}
+                    <form class="layui-form layui-form-pane "
+                          style="margin-top: 10px;font-size: 14px;font-family:方正粗黑宋简体">
+                        <div class="layui-form-item" pane>
+
+                            <label class="layui-form-label">车牌号</label>
+                            <div class="layui-input-block">
+                                <input id="ID" type="text" name="user_number" disabled="true" value="" required
+                                       lay-verify="required" class="layui-input">
+                            </div>
+
+                        </div>
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label">用户昵称</label>
+                            <div class="layui-input-block">
+                                <input id="name" type="text" name="user_name" disabled="true" value="" required
+                                       lay-verify="required" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label">用户手机号</label>
+                            <div class="layui-input-block">
+                                <input id="phone" type="text" name="user_phone" disabled="true" required
+                                       lay-verify="required" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label">出生年月日</label>
+                            <div class="layui-input-block">
+                                <input id="birth" type="text" name="user_birth" disabled="true" required
+                                       lay-verify="required" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">性别</label>
+                            <div class="layui-input-block">
+                                <input id="sex" type="text" name="user_birth" disabled="true" required
+                                       lay-verify="required"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                    </form>
+                {% elif usual == 'usual' %}
+                    <form class="layui-form layui-form-pane "
+                          style="margin-top: 10px;font-size: 14px;font-family:方正粗黑宋简体">
+                        <div class="layui-form-item" pane>
+
+                            <label class="layui-form-label">车牌号</label>
+                            <div class="layui-input-block">
+                                <input id="ID" type="text" name="number" value="" required lay-verify="required"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" pane>
+                            <label class="layui-form-label">开始停车时间</label>
+                            <div class="layui-input-block">
+                                <input id="strat" type="text" name="strat" value="" required lay-verify="required"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">是否会员</label>
+                            <div class="layui-input-block">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="radio" name="VIP" value="1" title="是">
+                                &nbsp;&nbsp;
+                                <input type="radio" name="VIP" value="0" title="否">
+                            </div>
+                        </div>
+                        <br><br>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="formDemo">添加</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                {% endif %}
+            </div>
+            <div class="layui-col-md4"></div>
+        </div>
+
+    </div>
+    </div>
+
+    <script src= {% static "layui/layui.all.js" %}></script>
+    <script>
+    layui.use('form', function () {
+
+        var form = layui.form;
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            var dict = data.field
+            console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+            console.log(dict.number)
+            if (dict.number == '' || dict.strat == '' || dict.end == '' || dict.VIP == '') {
+                layer.msg("不可为空！", {icon: 5})
+            } else {
+                $.ajax({
+                    url: "{% url "My_Parking_Charge:usual_add" %}",
+                    type: "post",
+                    datapyte: "json",
+                    data: {
+                        'user_number': dict.number, 'user_start': dict.strat, 'user_VIP': dict.VIP
+                    },
+                    success: function (e) {
+                        if (e == "1") {
+                            layer.msg("添加成功！", {icon: 1})
+                            setTimeout(function () {
+                                parent.location.reload()
+                            }, 2000);//延时刷新
+                        } else {
+                            layer.msg("添加失败！", {icon: 2})
+                        }
+
+                    }
+
+
+                })
+
+                return false;
+            }
+        });
+    });
+
+
+    //日期选择器
+
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#strat' //指定元素
+            , type: 'datetime'
+            , theme: '#1ebcff'
+        });
+    });
+
+    var radio_val = $("input[name='VIP']:checked").val();
+    console.log(radio_val)
+{% endif %}
+</script>
+</body>
+</html>
